@@ -10,7 +10,7 @@ Original file is located at
 !apt-get -y install openjdk-8-jdk-headless
 !wget http://apache.osuosl.org/spark/spark-2.4.0/spark-2.4.0-bin-hadoop2.7.tgz
 !tar xf spark-2.4.0-bin-hadoop2.7.tgz
-!pip install findspark
+!pip install findspark kaggle
 
 import os
 
@@ -32,35 +32,54 @@ from pyspark.sql import SparkSession, functions as F
 spark = SparkSession.builder.master('local[*]').getOrCreate()
 
 from functools import reduce
-
-dblp_refs = [spark.read.json('data/dblp-ref-0.json'),
-             spark.read.json('data/dblp-ref-1.json'),
-             spark.read.json('data/dblp-ref-2.json'),
-             spark.read.json('data/dblp-ref-3.json')]
-df = reduce(lambda x, f: f.union(x), dblp_refs)
+dblp_refs = ['data/dblp-ref-0.json',
+             'data/dblp-ref-1.json',
+             'data/dblp-ref-2.json',
+             'data/dblp-ref-3.json']
+df = reduce(lambda x, f: f.union(x), map(spark.read.json, dblp_refs))
 
 df.count()
 
 df.show()
 
-annual_paper_count = df.groupBy('year').count().orderBy('year', ascending=False)
+# Jumlah paper per tahun
 
-annual_paper_count.show()
+paper_count_per_year = df.groupBy('year').count().orderBy('year', ascending=False)
 
-annual_paper_count.toPandas().plot(x='year', y='count')
+paper_count_per_year.show()
 
-n_citation_avg = df.agg(F.avg('n_citation')).collect()[0][0]
-print('Average number of citation per paper:', int(n_citation_avg))
+paper_count_per_year.toPandas() \
+                    .plot(x='year',
+                          y='count',
+                          title='Number of paper per year')
 
+# Rata-rata jumlah citation untuk tiap paper
+
+n_citation_avg = df.agg(F.avg('n_citation'))
+
+print('Average number of citation per paper:', int(n_citation_avg.collect()[0][0]))
+
+# Venue / Conference dengan jumlah paper terbanyak per tahun
+
+# grouped by year and venue
 yv = df.groupBy('year', 'venue') \
        .count() \
        .where('venue != ""')
+
+# year and venue group aggregated by maximum row
 ym = df.groupBy('year', 'venue') \
        .count() \
        .where('venue != ""') \
        .groupBy('year') \
        .agg(F.max('count').alias('count'))
 
-vy = ym.join(yv, ['year', 'count'], 'left') \
-       .orderBy('year', ascending=False)
-vy.show()
+# maximum year and venue group with venue column
+most_venue_per_year =\
+    ym.join(yv, ['year', 'count'], 'left') \
+      .orderBy('year', ascending=False)
+
+most_venue_per_year.show()
+
+print('Venue / Conference with most paper for each year\n')
+for row in most_venue_per_year.collect():
+    print('{0}: {2} ({1} paper)'.format(*row))
