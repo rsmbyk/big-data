@@ -44,7 +44,9 @@ df.show()
 
 # Jumlah paper per tahun
 
-paper_count_per_year = df.groupBy('year').count().orderBy('year', ascending=False)
+paper_count_per_year = df.groupBy('year') \
+                         .count() \
+                         .orderBy('year', ascending=False)
 
 paper_count_per_year.show()
 
@@ -57,7 +59,8 @@ paper_count_per_year.toPandas() \
 
 n_citation_avg = df.agg(F.avg('n_citation'))
 
-print('Average number of citation per paper:', int(n_citation_avg.collect()[0][0]))
+print('Average number of citation per paper:',
+      int(n_citation_avg.collect()[0][0]))
 
 # Venue / Conference dengan jumlah paper terbanyak per tahun
 
@@ -82,4 +85,4 @@ most_venue_per_year.show()
 
 print('Venue / Conference with most paper for each year\n')
 for row in most_venue_per_year.collect():
-    print('{0}: {2} ({1} paper)'.format(*row))
+    print('{0}: {2} ({1} papers)'.format(*row))
