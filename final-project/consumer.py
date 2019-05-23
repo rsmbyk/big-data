@@ -36,7 +36,7 @@ def save_batch(batch, batch_num):
     return batch_filename
 
 
-batch_size = 50
+batch_size = 100000
 batch_count = 0
 batch = list()
 
