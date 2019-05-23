@@ -20,4 +20,4 @@ def process_batch(batch_filename, batch_num):
     graph = graphframes.GraphFrame(vertices, edges)
     communities = graph.labelPropagation(maxIter=5)
     comm_filename = 'data/models/comm_{}.csv'.format(batch_num)
-    communities.write.csv(comm_filename, header=True, mode='overwrite')
+    communities.toPandas().to_csv(comm_filename, header=True, index=False)

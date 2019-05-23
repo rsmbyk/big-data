@@ -31,7 +31,7 @@ def save_batch(batch, batch_num):
     edges = list(map(lambda x: (x['src'], x['dst']), batch))
     df = spark.createDataFrame(edges, ['src', 'dst'])
     batch_filename = 'data/batch/batch_{}.csv'.format(batch_num)
-    df.write.csv(batch_filename, header=True, mode='overwrite')
+    df.toPandas().to_csv(batch_filename, header=True, index=False)
     batch.clear()
     return batch_filename
 
