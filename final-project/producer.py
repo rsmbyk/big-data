@@ -16,4 +16,4 @@ for line in graph_cb:
     src, dst, t = line.split()
     value = {'src': src, 'dst': dst}
     producer.send(topic, value=value)
-    time.sleep(0.1)
+    time.sleep(0.001)
