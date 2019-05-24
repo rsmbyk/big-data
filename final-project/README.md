@@ -55,9 +55,9 @@ There are totally 443,399 follow relationships.
 - Body Parameters:
 	- `None`
 - Response:
-  ```
+  ```json
   {
-      "models": [ /* list of users */ ]
+      "models": [ "/* list of users */" ]
   }
   ```
 - Errors:
@@ -68,9 +68,9 @@ There are totally 443,399 follow relationships.
 - Body Parameters:
 	- `None`
 - Response:
-  ```
+  ```json
   {
-      "models": [ /* list of models */ ]
+      "models": [ "/* list of models */" ]
   }
   ```
 - Errors:
@@ -82,7 +82,7 @@ There are totally 443,399 follow relationships.
 	- `username`: `str`
 	- `model`: `str`
 - Response:
-  ```
+  ```json
   {
       "friends": ["dogcatbirdspet"],
       "model_filename": "data\\models\\comm_0.csv",
@@ -100,9 +100,9 @@ There are totally 443,399 follow relationships.
 	- `community`: `str`
 	- `model`: `str`
 - Response:
-  ```
+  ```json
   {
-      "community": 1342
+      "community": 1342,
       "members": ["dogcatbirdspet"],
       "model_filename": "data\\models\\comm_0.csv",
   }
@@ -117,7 +117,7 @@ There are totally 443,399 follow relationships.
 	- `username`: `str`
 	- `model`: `str`
 - Response:
-  ```
+  ```json
   {
       "community": 1342,
       "model_filename": "data\\models\\comm_0.csv",
