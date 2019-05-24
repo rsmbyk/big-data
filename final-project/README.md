@@ -55,7 +55,11 @@ There are totally 443,399 follow relationships.
 - Body Parameters:
 	- `None`
 - Response:
-	- `"models": [ /* list of users */ ]}`
+  ```
+  {
+      "models": [ /* list of users */ ]
+  }
+  ```
 - Errors:
 	- `None`
 
@@ -64,7 +68,11 @@ There are totally 443,399 follow relationships.
 - Body Parameters:
 	- `None`
 - Response:
-	- `"models": [ /* list of models */ ]}`
+  ```
+  {
+      "models": [ /* list of models */ ]
+  }
+  ```
 - Errors:
 	- `None`
 
